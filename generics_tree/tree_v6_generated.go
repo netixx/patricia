@@ -782,6 +782,16 @@ func (iter *TreeIteratorV6[T]) Tags() []T {
 	return iter.TagsWithBuffer(nil)
 }
 
+// Tags returns the current tags for the iterator. This is not a copy
+// and the result should not be used outside the iterator.
+func (iter *TreeIteratorV6[T]) TagsFromRoot() [][]T {
+	ret := make([][]T, len(iter.nodeHistory))
+	for i, n := range iter.nodeHistory {
+		ret[i] = iter.t.tagsForNode(nil, uint(n), nil)
+	}
+	return ret
+}
+
 // TagsWithBuffer returns the current tags for the iterator. To avoid
 // allocation, it uses the provided buffer.
 func (iter *TreeIteratorV6[T]) TagsWithBuffer(ret []T) []T {
